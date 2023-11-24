@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const movieSchema = new mongoose({
+const movieSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
@@ -15,4 +15,6 @@ const movieSchema = new mongoose({
   createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose("Movies", movieSchema);
+const Movies = mongoose.model("Movies", movieSchema);
+
+export default Movies;

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 // MongoDB connection
 const connectDB = async () => {
   try {
-    await mongoose.connect("mongodb://localhost:27017/prismplay", {
+    await mongoose.connect(process.env.DATABSE_ACCESS, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
