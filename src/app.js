@@ -5,6 +5,8 @@ import connectDB from "./db";
 import dotenv from "dotenv";
 import adminMoviesRouter from "./routes/admin/adminMovies";
 import authRouter from "./routes/auth";
+import userMoviesRouter from "./routes/user/userMovies";
+import userWatchListRouter from "./routes/user/userWatchList";
 
 const app = express();
 
@@ -16,9 +18,13 @@ connectDB();
 app.use(bodyParser.json());
 app.use(cors());
 
- app.use("/auth",authRouter);
+app.use("/auth", authRouter);
 //admin
 app.use("/admin/movie", adminMoviesRouter);
+
+//user
+app.use("/movies", userMoviesRouter);
+app.use("/user/", userWatchListRouter);
 
 app.listen(port, () => {
   console.log("server is running on", port);
