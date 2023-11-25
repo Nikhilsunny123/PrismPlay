@@ -14,4 +14,16 @@ userMoviesRouter.get("/", userAuthentication, async (req, res) => {
   }
 });
 
+//view single movie
+userMoviesRouter.get("/:movieid", userAuthentication, async (req, res) => {
+  try {
+    const movieid = req.params.movieid;
+    console.log();
+    const moviesModel = await Movies.findById({ _id: movieid });
+    res.status(200).json({ data: moviesModel });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
 export default userMoviesRouter;

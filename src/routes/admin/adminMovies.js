@@ -8,7 +8,11 @@ const adminMoviesRouter = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads");
+    if (file.fieldname === "video" || file.fieldname === "image") {
+      cb(null, "uploads");
+    } else {
+      cb(new Error("Invalid field name"));
+    }
   },
 
   filename: (req, file, cb) => {
@@ -18,26 +22,24 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage});
+const upload = multer({ storage });
 
 //add new movie
 adminMoviesRouter.post(
   "/add",
-  upload.array('files', 2),
+  upload.fields([
+    { name: "video", maxCount: 1 },
+    { name: "image", maxCount: 1 },
+  ]),
   adminAuthentication,
   async (req, res) => {
     try {
-      console.log("working")
+      console.log("working");
       const { title, description } = req.body;
-      const [videoFile, imageFile] = req.files;
-    
-
-
-      const videoUrl = videoFile.filename;
-      const imageUrl = imageFile.filename;
-      console.log(req.file);
+      const videoUrl = req.files.video[0];
+      const imageUrl = req.files.image[0];
       const uploadedBy = req.user.id;
-      console.log(uploadedBy);
+
       const moviesModel = await Movies.findOne({ title });
       if (moviesModel !== null) {
         res.status(400).json({ message: "Movie already exist" });
@@ -45,10 +47,11 @@ adminMoviesRouter.post(
         const newMovie = new Movies({
           title,
           description,
-          videoUrl,
-          imageUrl,
+          videoUrl: videoUrl,
+          imageUrl: imageUrl,
           uploadedBy,
         });
+        console.log(newMovie);
         const newMovieResp = await newMovie.save();
         res
           .status(200)

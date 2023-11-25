@@ -6,11 +6,14 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   description: { type: String },
-    uploadedBy: {
+  uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
+  videoUrl: { type: Object },
+  imageUrl: { type: Object },
+
   createdAt: { type: Date, default: Date.now },
 });
 
