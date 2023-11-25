@@ -6,8 +6,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   description: { type: String },
-  url: { type: String, required: true },
-  uploadedBy: {
+    uploadedBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
