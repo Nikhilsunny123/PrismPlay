@@ -36,8 +36,8 @@ adminMoviesRouter.post(
     try {
       console.log("working");
       const { title, description } = req.body;
-      const videoUrl = req.files.video[0];
-      const imageUrl = req.files.image[0];
+      const videoUrl = await req.files.video[0];
+      const imageUrl = await req.files.image[0];
       const uploadedBy = req.user.id;
 
       const moviesModel = await Movies.findOne({ title });
